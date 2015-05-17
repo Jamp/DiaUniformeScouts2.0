@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+{% load static from staticfiles %}
+<html lang="es" xmlns="http://www.w3.org/1999/html">
+    <head>
+        <meta charset="<?php echo APP_CHARSET ?>">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+
+        <title>Día de Uniforme</title>
+
+        <link rel="stylesheet" type="text/css" href="{% static "css/bootstrap.min.css" %}">
+        <link rel="stylesheet" type="text/css" href="{% static "css/font-awesome.min.css" %}">
+        <link rel="stylesheet" type="text/css" href="{% static "css/theme.css" %}">
+        <!-- <link rel="stylesheet" type="text/css" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css"> -->
+        <!-- <link rel="stylesheet" type="text/css" href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css"> -->
+
+        <!-- <script  type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script> -->
+        <!-- <script type="text/javascript" src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script> -->
+
+        <!--Load the AJAX API-->
+        <!-- <script type="text/javascript" src="https://www.google.com/jsapi" async></script> -->
+
+    </head>
+    <body>
+
+        <div class="navbar navbar-fixed-top header">
+            <div class="col-md-12" id="col-collapse1">
+                  <div class="navbar-header">
+                    <a href="#" class="navbar-brand"><img src="{% static "img/logo_es.png" %}" /></a>
+                  </div>
+              </div>
+        </div>
+        <div class="navbar navbar-default" id="subnav">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <div class="col-md-12">
+                <div class="collapse navbar-collapse">
+                    <ul class="nav navbar-nav" id="navbar-collapse2">
+                        {% if albums %}
+                            {% for item in albums %}
+                                {% if item.album == id_album %}
+                                    <li class="active"><a href>{{item.album}}</a></li>
+                                {% else %}
+                                    <li><a href="/album/{{item.album}}">{{item.album}}</a></li>
+                                {% endif %}
+                            {% endfor %}
+                        {% else %}
+                            <li><a href="#">No hay Albumnes</a></li>
+                        {% endif %}
+                   </ul>
+                </div>
+            </div>
+        </div>
+
+        <section class="container" id="main">
+            <section class="row">
+                <div class="col-md-6">
+                    <div class="well">
+                        <h4>Subir Foto</h4>
+                        <div class="panel-body">
+                            {% if message %}
+                                {% for message in messages %}
+                            <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+                                {% endfor %}
+                            {% endif %}
+                            <form action="/subir/" method="post" enctype="multipart/form-data" post="">
+                                <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
+                                <div class="row">
+                                    <div class="col-xs-12">
+                                        <br>
+                                        <input id="album_id" name="album_id" type="hidden" value="{{ id_album }}">
+                                        <input type="file" class="filestyle" data-buttonText="Seleccione Foto" data-iconName="fa fa-inbox" data-size="md">
+                                    </div>
+                                </div>
+                                <br>
+                                <div class="row">
+                                    <div class="col-xs-12 text-right">
+                                        <button type="submit" name="submit" class="btn btn-success"><i class="fa fa-upload"></i> Subir</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 ">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h4>#DiaUniformeScout</h4>
+                        </div>
+                        <div class="panel-body">
+                            <blockquote>
+                                <img src="{% static "img/BadenPowell.gif" %}" alt="Baden Powell (1857-1941)" class="img-circle pull-right">
+                                <p>La indumentaria Scout, por su uniforme, constituye un lazo más de hermandad entre los muchachos de todo el mundo.</p>
+                                <footer>
+                                    Baden Powell (1857-1941)
+                                </footer>
+                            </blockquote>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="gallery">
+                {% if photos.len == 0 %}
+                <div class="row">
+                    <div class="col-md-12 col-sm-6">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h4>Galería</h4>
+                            </div>
+                            <div class="panel-body">
+                                <h4 class="text-center">Galería vacía</h4>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <br>
+                {% endif %}
+                <div class="row">
+                    {% for photo in photos %}
+                    {% if forloop.counter0 == 0 %}
+                        <div class="col-md-4">
+                            <div class="panel panel-default photo">
+                                <div class="panel-thumbnail">
+                                    {% for item in albums %}
+                                        {% if item.album == id_album %}
+                                            <img src="{{ item.url }}" title="#DiadelUniformeScout" alt="#DiadelUniformeScout" class="img-responsive">
+                                        {% endif %}
+                                    {% endfor %}
+                                </div>
+                                <div class="panel-body">
+                                    <p>#DiadelUniformeScout</p>
+                                </div>
+                            </div>
+                        </div>
+                    {% endif %}
+
+                    <div class="col-md-4">
+                        <div class="panel panel-default photo">
+                            <div class="panel-thumbnail">
+                                <img src="{{ photo.url }}" class="img-responsive">
+                            </div>
+                            <div class="panel-body">
+                                <p>Publicado: {{ photo.creado_at|date:"d/m/Y H:i" }}</p>
+                            </div>
+                        </div>
+                    </div>
+
+
+                {% if forloop.counter == 2 %}
+                </div><div class="row">
+                {% endif %}
+
+                {% if forloop.counter|divisibleby:6 %}
+                </div><div class="row">
+                {% endif %}
+
+                {% endfor %}
+
+                </div>
+            </section>
+
+
+            <div class="row">
+                <div class="col-md-12" id="load">
+                    <div class="panel panel-default">
+                        <div class="panel-body text-center">
+                            {% if next %}
+                            <a href="pagina/" id="siguiente"><i class="fa fa-angle-double-down"></i> Ver más</a>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+        </section>
+
+        <div class="clearfix"></div>
+        <footer class="col-md-12 text-center" id="footer">
+            <a href="http://creativecommons.org/licenses/by-nc-sa/4.0/deed.es"><img src="{% static "img/creative_commons/cc.png" %}" title="Creative Commons" alt="Creative Commons" /></a>
+            <a href="http://creativecommons.org/licenses/by-nc-sa/4.0/deed.es"><img src="{% static "img/creative_commons/by.png" %}" title="Atribución" alt="Atribución" /></a>
+            <a href="http://creativecommons.org/licenses/by-nc-sa/4.0/deed.es"><img src="{% static "img/creative_commons/nc.png" %}" title="NoComercial" alt="NoComercial" /></a>
+            <a href="http://creativecommons.org/licenses/by-nc-sa/4.0/deed.es"><img src="{% static "img/creative_commons/sa.png" %}" title="CompartirIgual" alt="CompartirIgual" /></a>
+            <p>
+                <a href="http://www.icter.us">Desarrollado por Ictmer.us<br>2013 - 2015</a>
+            </p>
+        </footer>
+
+    <script id="items" type="text/x-jquery-tmpl">
+            <div class="col-md-4">
+                <div class="panel panel-default photo">
+                    <div class="panel-thumbnail">
+                        <img src="${url}" alt="Null" class="img-responsive">
+                    </div>
+                    <div class="panel-body">
+                        <p>Publicado: ${creado_at}</p>
+                    </div>
+                </div>
+            </div>
+    </script>
+
+    <script type="text/javascript" src="{% static "js/jquery.min.js" %}"></script>
+    <script type="text/javascript" src="{% static "js/jquery.tmpl.min.js" %}"></script>
+    <script type="text/javascript" src="{% static "js/bootstrap.min.js" %}"></script>
+    <script type="text/javascript" src="{% static "js/bootstrap-filestyle.min.js" %}"></script>
+    <script type="text/javascript">
+        $(function(){
+            var page = 1;
+            var total = {{ all.count }}-1;
+            var actual = {{ id_album }};
+            var text = $('#siguiente').html();
+            $('#siguiente').on('click', function(event){
+                event.preventDefault();
+                var link = this.href;
+                page++;
+                var url = link+page+'/'+actual;
+                var loading = '<i class="fa fa-spinner fa-spin"></i> Cargando...';
+
+                $('#siguiente').html(loading);
+                $('#gallery').append('<div class="row">');
+                $.getJSON(
+                    url,
+                    null,
+                    function(data){
+                        row1 = data.slice(0, 3);
+                        row2 = data.slice(3, 6);
+
+                        $('#items').tmpl(row1).appendTo('#gallery');
+                        $('#gallery').append('</div><div class="row">');
+
+                        $('#items').tmpl(row2).appendTo('#gallery');
+                        $('#gallery').append('</div>');
+
+                        total--;
+                        if (total == 0){
+                            $('#load').remove();
+                        } else {
+                            $('#siguiente').html(text);
+                        }
+                    }
+                ).fail(function(){
+                    $('#load').remove();
+                });
+
+            });
+        });
+
+    </script>
+    </body>
+</html>

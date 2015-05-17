@@ -4,6 +4,7 @@ from django.shortcuts import render_to_response
 from django.core.urlresolvers import reverse
 from django.contrib import messages
 from models import Album, Fotos
+from forms import UploadForm
 from datetime import datetime
 import simplejson
 
@@ -44,8 +45,22 @@ def album(request,id_album):
     return render_to_response(template,context_instance=RequestContext(request,locals()))
 
 def subir(request):
-    messages.error(request, 'Error al subir imagen')
-    messages.success(request, 'Imagen subida exitosamente!!!')
+
+    try:
+        if request.method == 'POST':
+            form = UploadForm(request.POST, request.FILES)
+            if form.is_valid():
+                NewPhoto = Fotos(album=request.POST['album'], url=request.FILES['url'])
+                NewPhoto.save(form)
+                messages.success(request, 'Imagen subida exitosamente!!!')
+            else:
+                messages.error(request, 'Formato de archivo no aceptado')
+        else:
+            messages.error(request, 'Error al subir imagen')
+    except Exception, e:
+        logger.debug(e)
+        messages.error(request, 'Error al subir imagen')
+
     return HttpResponseRedirect(reverse('home'))
 
 def paginar(request, pagina='2', id_album=None):
@@ -59,8 +74,6 @@ def paginar(request, pagina='2', id_album=None):
     if pagina == 1:
         inicio = 0
         final = 5
-
-    logger.debug("%i: %i -> %i" % (pagina, inicio, final))
 
     photos = Fotos.objects.all().filter(album=id_album).order_by('-creado_at')[inicio:final]
 

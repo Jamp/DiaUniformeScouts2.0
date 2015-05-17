@@ -59,53 +59,6 @@
         </div>
 
         <section class="container" id="main">
-            <section class="row">
-                <div class="col-md-6">
-                    <div class="well">
-                        <h4>Subir Foto</h4>
-                        <div class="panel-body">
-                            {% if message %}
-                                {% for message in messages %}
-                            <div class="alert alert-{{ message.tags }}">{{ message }}</div>
-                                {% endfor %}
-                            {% endif %}
-                            <form action="/subir/" method="post" enctype="multipart/form-data" post="">
-                                <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
-                                <div class="row">
-                                    <div class="col-xs-12">
-                                        <br>
-                                        <input id="album_id" name="album_id" type="hidden" value="{{ id_album }}">
-                                        <input type="file" class="filestyle" data-buttonText="Seleccione Foto" data-iconName="fa fa-inbox" data-size="md">
-                                    </div>
-                                </div>
-                                <br>
-                                <div class="row">
-                                    <div class="col-xs-12 text-right">
-                                        <button type="submit" name="submit" class="btn btn-success"><i class="fa fa-upload"></i> Subir</button>
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-6 ">
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                            <h4>#DiaUniformeScout</h4>
-                        </div>
-                        <div class="panel-body">
-                            <blockquote>
-                                <img src="{% static "img/BadenPowell.gif" %}" alt="Baden Powell (1857-1941)" class="img-circle pull-right">
-                                <p>La indumentaria Scout, por su uniforme, constituye un lazo más de hermandad entre los muchachos de todo el mundo.</p>
-                                <footer>
-                                    Baden Powell (1857-1941)
-                                </footer>
-                            </blockquote>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
             <section id="gallery">
                 {% if photos.len == 0 %}
                 <div class="row">

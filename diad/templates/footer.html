@@ -1,0 +1,72 @@
+        {% load static from staticfiles %}
+        <div class="clearfix"></div>
+        <footer class="col-md-12 text-center" id="footer">
+            <a href="http://creativecommons.org/licenses/by-nc-sa/4.0/deed.es"><img src="{% static "img/creative_commons/cc.png" %}" title="Creative Commons" alt="Creative Commons" /></a>
+            <a href="http://creativecommons.org/licenses/by-nc-sa/4.0/deed.es"><img src="{% static "img/creative_commons/by.png" %}" title="Atribución" alt="Atribución" /></a>
+            <a href="http://creativecommons.org/licenses/by-nc-sa/4.0/deed.es"><img src="{% static "img/creative_commons/nc.png" %}" title="NoComercial" alt="NoComercial" /></a>
+            <a href="http://creativecommons.org/licenses/by-nc-sa/4.0/deed.es"><img src="{% static "img/creative_commons/sa.png" %}" title="CompartirIgual" alt="CompartirIgual" /></a>
+            <p>
+                Desarrollado por <a href="http://www.icter.us">ScoutsFalcon</a><br>2013 - 2015
+            </p>
+        </footer>
+
+    <script id="items" type="text/x-jquery-tmpl">
+            <div class="col-md-4">
+                <div class="panel panel-default photo">
+                    <div class="panel-thumbnail">
+                        <img src="${url}" title="${creado_at}" alt="${creado_at}" class="img-responsive">
+                    </div>
+                    <div class="panel-body">
+                        <p>Publicado: ${creado_at}</p>
+                    </div>
+                </div>
+            </div>
+    </script>
+
+    <script type="text/javascript" src="{% static "js/jquery.min.js" %}"></script>
+    <script type="text/javascript" src="{% static "js/jquery.tmpl.min.js" %}"></script>
+    <script type="text/javascript" src="{% static "js/bootstrap.min.js" %}"></script>
+    <script type="text/javascript" src="{% static "js/bootstrap-filestyle.min.js" %}"></script>
+    <script type="text/javascript">
+        $(function(){
+            var page = 1;
+            var total = {{ all.count }}-1;
+            var actual = {{ id_album }};
+            var text = $('#siguiente').html();
+            $('#siguiente').on('click', function(event){
+                event.preventDefault();
+                var link = this.href;
+                page++;
+                var url = link+page+'/'+actual;
+                var loading = '<i class="fa fa-spinner fa-spin"></i> Cargando...';
+
+                $('#siguiente').html(loading);
+                $('#gallery').append('<div class="row">');
+                $.getJSON(
+                    url,
+                    null,
+                    function(data){
+                        row1 = data.slice(0, 3);
+                        row2 = data.slice(3, 6);
+
+                        $('#items').tmpl(row1).appendTo('#gallery');
+                        $('#gallery').append('</div><div class="row">');
+
+                        $('#items').tmpl(row2).appendTo('#gallery');
+                        $('#gallery').append('</div>');
+
+                        total--;
+                        if (total == 0){
+                            $('#load').remove();
+                        } else {
+                            $('#siguiente').html(text);
+                        }
+                    }
+                ).fail(function(){
+                    $('#load').remove();
+                });
+
+            });
+        });
+
+    </script>

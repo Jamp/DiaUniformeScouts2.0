@@ -17,13 +17,15 @@ def home(request, id_album=None):
 
     if not id_album:
         id_album = datetime.now().year
+    else:
+        id_album = int(id_album)
 
-    albums = Album.objects.all()
+    albums = Album.objects.all().order_by('-album')
     photos = Fotos.objects.all().filter(album=id_album).order_by('-creado_at')[0:5]
 
     message = messages.get_messages(request)
 
-    all = Fotos.objects.all()
+    all = len(Fotos.objects.all().filter(album=id_album))
     next = False
     if all > 5:
         next = True
@@ -31,15 +33,20 @@ def home(request, id_album=None):
     template = 'index.html'
     return render_to_response(template,context_instance=RequestContext(request,locals()))
 
-def album(request,id_album):
+def album(request, id_album):
 
-    albums = Album.objects.all()
+    current = datetime.now().year
+    id_album = int(id_album)
+
+    albums = Album.objects.all().order_by('-album')
     photos = Fotos.objects.all().filter(album=id_album).order_by('-creado_at')[0:5]
 
-    all = Fotos.objects.all()
+    all = len(Fotos.objects.all().filter(album=id_album))
     next = False
     if all > 5:
         next = True
+
+    print(locals())
 
     template = 'album.html'
     return render_to_response(template,context_instance=RequestContext(request,locals()))

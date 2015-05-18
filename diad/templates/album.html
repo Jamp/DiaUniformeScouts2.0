@@ -44,7 +44,9 @@
                     <ul class="nav navbar-nav" id="navbar-collapse2">
                         {% if albums %}
                             {% for item in albums %}
-                                {% if item.album == id_album %}
+                                {% if item.album == current %}
+                                    <li><a href="/">{{item.album}}</a></li>
+                                {% elif item.album == id_album %}
                                     <li class="active"><a href>{{item.album}}</a></li>
                                 {% else %}
                                     <li><a href="/album/{{item.album}}">{{item.album}}</a></li>
@@ -121,87 +123,23 @@
             </section>
 
 
+            {% if next %}
             <div class="row">
                 <div class="col-md-12" id="load">
                     <div class="panel panel-default">
                         <div class="panel-body text-center">
-                            {% if next %}
                             <a href="pagina/" id="siguiente"><i class="fa fa-angle-double-down"></i> Ver más</a>
-                            {% endif %}
                         </div>
                     </div>
                 </div>
             </div>
+            {% endif %}
 
 
         </section>
 
-        <div class="clearfix"></div>
-        <footer class="col-md-12 text-center" id="footer">
-            <a href="http://creativecommons.org/licenses/by-nc-sa/4.0/deed.es"><img src="{% static "img/creative_commons/cc.png" %}" title="Creative Commons" alt="Creative Commons" /></a>
-            <a href="http://creativecommons.org/licenses/by-nc-sa/4.0/deed.es"><img src="{% static "img/creative_commons/by.png" %}" title="Atribución" alt="Atribución" /></a>
-            <a href="http://creativecommons.org/licenses/by-nc-sa/4.0/deed.es"><img src="{% static "img/creative_commons/nc.png" %}" title="NoComercial" alt="NoComercial" /></a>
-            <a href="http://creativecommons.org/licenses/by-nc-sa/4.0/deed.es"><img src="{% static "img/creative_commons/sa.png" %}" title="CompartirIgual" alt="CompartirIgual" /></a>
-            <p>
-                <a href="http://www.icter.us">Desarrollado por Ictmer.us<br>2013 - 2015</a>
-            </p>
-        </footer>
+    {% include "footer.html" %}
 
-    <script id="items" type="text/x-jquery-tmpl">
-            <div class="col-md-4">
-                <div class="panel panel-default photo">
-                    <div class="panel-thumbnail">
-                        <img src="${url}" alt="Null" class="img-responsive">
-                    </div>
-                    <div class="panel-body">
-                        <p>Publicado: ${creado_at}</p>
-                    </div>
-                </div>
-            </div>
-    </script>
 
-    <script type="text/javascript">
-        $(function(){
-            var page = 1;
-            var total = {{ all.count }}-1;
-            var actual = {{ id_album }};
-            var text = $('#siguiente').html();
-            $('#siguiente').on('click', function(event){
-                event.preventDefault();
-                var link = this.href;
-                page++;
-                var url = link+page+'/'+actual;
-                var loading = '<i class="fa fa-spinner fa-spin"></i> Cargando...';
-
-                $('#siguiente').html(loading);
-                $('#gallery').append('<div class="row">');
-                $.getJSON(
-                    url,
-                    null,
-                    function(data){
-                        row1 = data.slice(0, 3);
-                        row2 = data.slice(3, 6);
-
-                        $('#items').tmpl(row1).appendTo('#gallery');
-                        $('#gallery').append('</div><div class="row">');
-
-                        $('#items').tmpl(row2).appendTo('#gallery');
-                        $('#gallery').append('</div>');
-
-                        total--;
-                        if (total == 0){
-                            $('#load').remove();
-                        } else {
-                            $('#siguiente').html(text);
-                        }
-                    }
-                ).fail(function(){
-                    $('#load').remove();
-                });
-
-            });
-        });
-
-    </script>
     </body>
 </html>

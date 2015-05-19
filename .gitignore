@@ -63,6 +63,7 @@ target/
 .idea/
 
 # Others Stuffs
+diad.log
 diad/static/img/album/
 diad/static/img/portada/
 

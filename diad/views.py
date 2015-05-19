@@ -46,8 +46,6 @@ def album(request, id_album):
     if all > 5:
         next = True
 
-    print(locals())
-
     template = 'album.html'
     return render_to_response(template,context_instance=RequestContext(request,locals()))
 

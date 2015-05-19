@@ -12,6 +12,10 @@
         <link rel="stylesheet" type="text/css" href="{% static "css/bootstrap.min.css" %}">
         <link rel="stylesheet" type="text/css" href="{% static "css/font-awesome.min.css" %}">
         <link rel="stylesheet" type="text/css" href="{% static "css/theme.css" %}">
+
+        {% if not active %}
+        <link rel="stylesheet" type="text/css" href="{% static "css/countdown.css" %}">
+        {% endif %}
         <!-- <link rel="stylesheet" type="text/css" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css"> -->
         <!-- <link rel="stylesheet" type="text/css" href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css"> -->
 
@@ -80,7 +84,11 @@
                                 <br>
                                 <div class="row">
                                     <div class="col-xs-12 text-right">
-                                        <button type="submit" name="submit" class="btn btn-success"><i class="fa fa-upload"></i> Subir</button>
+                                        {% if active %}
+                                            <button type="submit" name="submit" class="btn btn-success"><i class="fa fa-upload"></i> Subir</button>
+                                        {% else %}
+                                            <button type="submit" name="submit" class="btn btn-success" disabled><i class="fa fa-upload"></i> Subir</button>
+                                        {% endif %}
                                     </div>
                                 </div>
                             </form>
@@ -106,7 +114,32 @@
             </section>
 
             <section id="gallery">
-                {% if photos.len == 0 %}
+                {% if not active %}
+                <div class="row">
+                    <div class="col-md-12 col-sm-6">
+                        <div class="panel panel-default" id="countdown">
+                            <div class="panel-body">
+                                <header>
+                                    <!-- HEADLINE -->
+                                    <h1 data-animated="GoIn"><b>#DiaUniformeScout</b> en...</h1>
+                                </header>
+                                <!-- START TIMER -->
+                                <div id="timer" data-animated="FadeIn">
+                                    <p id="message"></p>
+                                    <div id="days" class="timer_box"></div>
+                                    <div id="hours" class="timer_box"></div>
+                                    <div id="minutes" class="timer_box"></div>
+                                    <div id="seconds" class="timer_box"></div>
+                                </div>
+                                <!-- END TIMER -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <br>
+                {% endif %}
+                {% if all == 0 and active %}
                 <div class="row">
                     <div class="col-md-12 col-sm-6">
                         <div class="panel panel-default">
@@ -172,7 +205,7 @@
                 <div class="col-md-12" id="load">
                     <div class="panel panel-default">
                         <div class="panel-body text-center">
-                            <a href="pagina/" id="siguiente"><i class="fa fa-angle-double-down"></i> Ver más</a>
+                            <a href="/pagina/" id="siguiente"><i class="fa fa-angle-double-down"></i> Ver más</a>
                         </div>
                     </div>
                 </div>
@@ -183,6 +216,11 @@
         </section>
 
         {% include "footer.html" %}
+
+
+        {% if not active %}
+        <script type="text/javascript" src="{% static "js/countdown.js" %}"></script>
+        {% endif %}
 
     </body>
 </html>

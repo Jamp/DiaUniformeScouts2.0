@@ -21,14 +21,16 @@ def home(request, id_album=None):
         id_album = int(id_album)
 
     albums = Album.objects.all().order_by('-album')
-    photos = Fotos.objects.all().filter(album=id_album).order_by('-creado_at')[0:5]
+    photos = Fotos.objects.all().filter(album=id_album, autorizado=True).order_by('-creado_at')[0:5]
 
     message = messages.get_messages(request)
 
-    all = len(Fotos.objects.all().filter(album=id_album))
+    all = len(Fotos.objects.all().filter(album=id_album, autorizado=True))
     next = False
     if all > 5:
         next = True
+
+    active = False
 
     template = 'index.html'
     return render_to_response(template,context_instance=RequestContext(request,locals()))
@@ -39,9 +41,9 @@ def album(request, id_album):
     id_album = int(id_album)
 
     albums = Album.objects.all().order_by('-album')
-    photos = Fotos.objects.all().filter(album=id_album).order_by('-creado_at')[0:5]
+    photos = Fotos.objects.all().filter(album=id_album, autorizado=True).order_by('-creado_at')[0:5]
 
-    all = len(Fotos.objects.all().filter(album=id_album))
+    all = len(Fotos.objects.all().filter(album=id_album, autorizado=True))
     next = False
     if all > 5:
         next = True

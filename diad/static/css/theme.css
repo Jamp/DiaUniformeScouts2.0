@@ -172,4 +172,7 @@ h3,h4,h5 {
   opacity: .5;
 }
 
+/* Adicionales */
 .alert-error{background-color:#f2dede;border-color:#ebccd1;color:#a94442}
+.well {background-color: white;}
+.navbar-toggle {float: left;}

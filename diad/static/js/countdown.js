@@ -15,16 +15,22 @@ COMMING SOON PAGE
     var hours = $('#hours');
     var minutes = $('#minutes');
     var seconds = $('#seconds');
+
+    var daysM = $('#daysM');
+    var hoursM = $('#hoursM');
+    var minutesM = $('#minutesM');
+    var secondsM = $('#secondsM');
     
     setDate();
     function setDate(){
         var now = new Date();
         if( launch < now ){
-            days.html('<h1>0</H1><p>Day</p>');
-            hours.html('<h1>0</h1><p>Hour</p>');
-            minutes.html('<h1>0</h1><p>Minute</p>');
-            seconds.html('<h1>0</h1><p>Second</p>');
+            days.html('<h1>0</H1><p>Dias</p>');
+            hours.html('<h1>0</h1><p>Horas</p>');
+            minutes.html('<h1>0</h1><p>Minutos</p>');
+            seconds.html('<h1>0</h1><p>Segundos</p>');
             //message.html('OUR SITE IS NOT READY YET...');
+            message.html('0 Días 0 Horas 0 Minutos 0 Segundos<br>');
         }
         else{
             var s = -now.getTimezoneOffset()*60 + (launch.getTime() - now.getTime())/1000;
@@ -40,10 +46,12 @@ COMMING SOON PAGE
             minutes.html('<h1>'+m+'</h1><p>Minuto'+(m>1?'s':''),'</p>');
 
             s = Math.floor(s-m*60);
-            seconds.html('<h1>'+s+'</h1><p>Segundos</p>');
+            seconds.html('<h1>'+s+'</h1><p>Segundo'+(m>1?'s':'')+'</p>');
+
+            message.html(d+' Día'+(d>1?'s ':' ')+h+' Hora'+(h>1?'s ':' ')+m+' Minuto'+(m>1?'s ':' ')+s+' Segundo'+(m>1?'s':'')+'<br>');
+
             setTimeout(setDate, 1000);
 
-            //message.html('OUR SITE IS NOT READY YET, BUT WE ARE COMING SOON');
         }
     }
 })(jQuery);

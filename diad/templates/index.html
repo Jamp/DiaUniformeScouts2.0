@@ -64,9 +64,25 @@
         <section class="container" id="main">
             <section class="row">
                 <div class="col-md-6">
+                    <!-- FIXME: debo hacer un flexbox para resolver el problema de estos bloques repetidos -->
+                    {% if not active %}
+                    <div class="panel panel-default movil" id="countdown">
+                        <div class="panel-body">
+                            <header>
+                                <!-- HEADLINE -->
+                                <h1 data-animated="GoIn"><b>#DiaUniformeScout</b> en...</h1>
+                            </header>
+                            <!-- START TIMER -->
+                            <div id="timer" data-animated="FadeIn">
+                                <p id="message"></p>
+                            </div>
+                            <!-- END TIMER -->
+                        </div>
+                    </div>
+                    {% endif %}
                     <div class="well">
                         <h4>Subir Foto</h4>
-                        <div class="panel-body">
+                        <div class="panel-body desktop">
                             {% if message %}
                                 {% for message in messages %}
                             <div class="alert alert-{{ message.tags }}">{{ message }}</div>
@@ -117,7 +133,7 @@
                 {% if not active %}
                 <div class="row">
                     <div class="col-md-12 col-sm-6">
-                        <div class="panel panel-default" id="countdown">
+                        <div class="panel panel-default desktop" id="countdown">
                             <div class="panel-body">
                                 <header>
                                     <!-- HEADLINE -->
@@ -125,7 +141,6 @@
                                 </header>
                                 <!-- START TIMER -->
                                 <div id="timer" data-animated="FadeIn">
-                                    <p id="message"></p>
                                     <div id="days" class="timer_box"></div>
                                     <div id="hours" class="timer_box"></div>
                                     <div id="minutes" class="timer_box"></div>

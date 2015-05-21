@@ -6,7 +6,11 @@ from django.contrib import messages
 from models import Album, Fotos
 from forms import UploadForm
 from datetime import datetime
+from django.conf import settings
+from twython import Twython
 import simplejson
+import facebook
+import requests
 
 
 import logging
@@ -94,3 +98,49 @@ def paginar(request, pagina='2', id_album=None):
     if len(photos) == 0:
         return HttpResponseNotFound('<h1>Page not found</h1>')
     return HttpResponse(simplejson.dumps(output), content_type="application/json")
+
+
+## Get Token FB/Twitter
+def twitter_token(request):
+    ## Tomamos el absolute path de donde esta corriendo
+    callback = request.build_absolute_uri()
+
+
+    if request.GET:
+        auth = request.session['twitter_auth']
+        token = auth['oauth_token']
+        secret = auth['oauth_token_secret']
+    else:
+        twitter = Twython(settings.TW_KEY, settings.TW_SECRET)
+        ## Se arma la URL para autenticar
+        auth = twitter.get_authentication_tokens(callback_url=callback)
+        url = auth['auth_url']
+        request.session['twitter_auth'] = auth
+
+    template = 'twitter_token.html'
+    return render_to_response(template, locals())
+
+def facebook_token(request):
+    ## Tomamos el absolute path de donde esta corriendo
+    callback = request.build_absolute_uri()
+
+    if request.GET:
+        code = request.GET['code']
+
+        ## Con el Code que recibimos de FB solicitamos un Access Token temporal
+        params = facebook.get_access_token_from_code(code, callback, settings.FB_API, settings.FB_SECRET)
+
+        ## Solicitamos el un Access Token "Permanente" 2 Meses aproximadamente
+        arg = {'grant_type': 'fb_exchange_token', 'client_id': settings.FB_API, 'client_secret': settings.FB_SECRET, 'fb_exchange_token': params['access_token']}
+        req = requests.request("GET","https://graph.facebook.com/oauth/access_token", params=arg).text
+
+        ## Carpinteria
+        s = req.split('&')
+        t, token = s[0].split('=')
+        e, expires = s[1].split('=')
+    else:
+        ## Se arma la URL para autenticar
+        url = facebook.auth_url(settings.FB_API, callback, ['user_about_me','user_photos','publish_actions'])
+
+    template = 'facebook_token.html'
+    return render_to_response(template, locals())

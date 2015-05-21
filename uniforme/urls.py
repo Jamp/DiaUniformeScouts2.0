@@ -28,6 +28,9 @@ urlpatterns = [
     url(r'^pagina/(\d+)$', 'diad.views.paginar', name='paginar'),
     url(r'^pagina/(\d+)/(\d+)$', 'diad.views.paginar', name='paginar'),
 
+    url(r'^facebook/$', 'diad.views.facebook_token', name='facebook_token'),
+    url(r'^twitter/$', 'diad.views.twitter_token', name='twitter_token'),
+
 
     url(r'^admin/', include(admin.site.urls)),
 ]

@@ -112,8 +112,17 @@ def twitter_token(request):
 
     if request.GET:
         auth = request.session['twitter_auth']
-        token = auth['oauth_token']
-        secret = auth['oauth_token_secret']
+        ttoken = auth['oauth_token']
+        tsecret = auth['oauth_token_secret']
+
+        verifier = request.GET['oauth_verifier']
+
+        twitter = Twython(settings.TW_KEY, settings.TW_SECRET, ttoken, tsecret)
+
+        oauth = twitter.get_authorized_tokens(verifier)
+
+        token = oauth['oauth_token']
+        secret = oauth['oauth_token_secret']
     else:
         twitter = Twython(settings.TW_KEY, settings.TW_SECRET)
         ## Se arma la URL para autenticar

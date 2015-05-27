@@ -90,7 +90,7 @@ def paginar(request, pagina='2', id_album=None):
         inicio = 0
         final = 5
 
-    photos = Fotos.objects.all().filter(album=id_album).order_by('-creado_at')[inicio:final]
+    photos = Fotos.objects.all().filter(album=id_album, autorizado=True).order_by('-creado_at')[inicio:final]
 
     output = []
     for photo in photos:

@@ -37,7 +37,7 @@ def home(request, id_album=None):
 
     active = False
     ## TODO: Convertir en una opción para ser manejada por el panel y no HardCoding
-    if datetime.now().strftime('%d/%m/%Y') == '28/05/2015':
+    if datetime.now().strftime('%d/%m/%Y') == '2//05/2015':
         active = True
 
     template = 'index.html'

@@ -67,7 +67,7 @@ def subir(request):
             if form.is_valid():
                 NewPhoto = Fotos(album=request.POST['album'], url=request.FILES['url'])
                 NewPhoto.save(form)
-                messages.success(request, 'Imagen subida exitosamente!!!')
+                messages.success(request, 'Imagen subida exitosamente!!! Por favor espere que nuestros administradores la aprueben para que pueda verla publicada')
             else:
                 messages.error(request, 'Formato de archivo no aceptado')
         else:

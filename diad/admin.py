@@ -10,8 +10,10 @@ class AlbumAdmin(admin.ModelAdmin):
 
     portada.allow_tags = True
 
+
 class FotosAdmin(admin.ModelAdmin):
     list_display = ('album', 'imagen', 'autorizado')
+    list_filter = ('album',)
 
     def imagen(self, obj):
         url = obj.url

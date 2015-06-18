@@ -1,6 +1,5 @@
 from datetime import datetime
 
-def copyrigth(request):
-    1/0
+def copyright(request):
     actual = datetime.now()
     return {'actual': actual.year}

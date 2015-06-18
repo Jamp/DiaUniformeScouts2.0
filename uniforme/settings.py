@@ -13,7 +13,6 @@ https://docs.djangoproject.com/en/1.8/ref/settings/
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
 import logging
-from django.conf.global_settings import TEMPLATE_CONTEXT_PROCESSORS as TCP
 
 # Variables para la App
 APP_NAME = 'diad'
@@ -83,14 +82,11 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'diad.context_processors.copyright',
             ],
         },
     },
 ]
-
-TEMPLATE_CONTEXT_PROCESSORS = TCP + (
-    'diad.context_processors.copyrigth',
-)
 
 WSGI_APPLICATION = 'uniforme.wsgi.application'
 

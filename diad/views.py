@@ -25,7 +25,7 @@ def home(request, id_album=None):
         id_album = int(id_album)
 
     albums = Album.objects.all().order_by('-album')
-    photos = Fotos.objects.all().filter(album=id_album, autorizado=True).order_by('-creado_at')[0:5]
+    photos = Fotos.objects.all().filter(album=id_album, autorizado=True).order_by('-id')[0:5]
 
     message = messages.get_messages(request)
 
@@ -50,7 +50,7 @@ def album(request, id_album):
     id_album = int(id_album)
 
     albums = Album.objects.all().order_by('-album')
-    photos = Fotos.objects.all().filter(album=id_album, autorizado=True).order_by('-creado_at')[0:5]
+    photos = Fotos.objects.all().filter(album=id_album, autorizado=True).order_by('-id')[0:5]
 
     all = len(Fotos.objects.all().filter(album=id_album, autorizado=True))
     next = False
@@ -61,7 +61,6 @@ def album(request, id_album):
     return render(request, template, locals())
 
 def subir(request):
-
     try:
         if request.method == 'POST':
             form = UploadForm(request.POST, request.FILES)
@@ -91,11 +90,12 @@ def paginar(request, pagina='2', id_album=None):
         inicio = 0
         final = 5
 
-    photos = Fotos.objects.all().filter(album=id_album, autorizado=True).order_by('-creado_at')[inicio:final]
+    photos = Fotos.objects.all().filter(album=id_album, autorizado=True).order_by('-id')[inicio:final]
 
     output = []
     for photo in photos:
         item = {
+            'id': photo.id,
             'url': str(photo.url),
             'creado_at': photo.creado_at.strftime('%d/%m/%Y %H:%M')
         }

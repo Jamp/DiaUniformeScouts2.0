@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from django.http import HttpResponse, HttpResponseRedirect, HttpResponseNotFound
+from django.http import JsonResponse, HttpResponseRedirect, HttpResponseNotFound
 from django.template.context import RequestContext
 from django.shortcuts import render_to_response, render
 from django.core.urlresolvers import reverse
@@ -95,14 +95,16 @@ def paginar(request, pagina='2', id_album=None):
 
     output = []
     for photo in photos:
-        item = {}
-        item['url'] = str(photo.url)
-        item['creado_at'] = photo.creado_at.strftime('%d/%m/%Y %H:%M')
+        item = {
+            'url': str(photo.url),
+            'creado_at': photo.creado_at.strftime('%d/%m/%Y %H:%M')
+        }
         output.append(item)
 
     if len(photos) == 0:
         return HttpResponseNotFound('<h1>Page not found</h1>')
-    return JsonResponse(output)
+
+    return JsonResponse({'photos': output})
 
 
 ## Get Token FB/Twitter

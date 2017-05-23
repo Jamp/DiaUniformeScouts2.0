@@ -48,8 +48,9 @@
                 $.getJSON(
                     url,
                     null,
-                    function(data){
-                        row1 = data.slice(0, 3);
+                    function(response){
+                        var data = response.photos,
+                        row1 = data.slice(0, 3),
                         row2 = data.slice(3, 6);
 
                         $('#items').tmpl(row1).appendTo('#gallery');

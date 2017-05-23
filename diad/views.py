@@ -24,7 +24,7 @@ def home(request, id_album=None):
     else:
         id_album = int(id_album)
 
-    albums = Album.objects.all().order_by('album')
+    albums = Album.objects.all().order_by('-album')
     photos = Fotos.objects.all().filter(album=id_album, autorizado=True).order_by('-creado_at')[0:5]
 
     message = messages.get_messages(request)
@@ -49,7 +49,7 @@ def album(request, id_album):
     current = datetime.now().year
     id_album = int(id_album)
 
-    albums = Album.objects.all().order_by('album')
+    albums = Album.objects.all().order_by('-album')
     photos = Fotos.objects.all().filter(album=id_album, autorizado=True).order_by('-creado_at')[0:5]
 
     all = len(Fotos.objects.all().filter(album=id_album, autorizado=True))

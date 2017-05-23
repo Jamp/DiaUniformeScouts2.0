@@ -8,7 +8,8 @@ from datetime import datetime
 from twython import Twython
 from facebook import GraphAPI
 
-descripcion = 'Nueva imagen subida a http://uniforme.scoutsfalcon.org, Celebrando el orgullo de ser Scout #DiadelUniformeScout'
+descripcion = 'Nueva imagen subida a http://uniforme.scoutsfalcon.org, \
+Celebrando el orgullo de ser Scout #DiadelUniformeScout'
 
 # Create your models here.
 class Album(models.Model):
@@ -16,11 +17,19 @@ class Album(models.Model):
     url = models.ImageField(upload_to=settings.APP_NAME+'/static/img/portada')
     creado_at = models.DateTimeField(auto_now_add=True)
 
+    class Meta:
+        verbose_name = 'Album'
+        verbose_name_plural = 'Albumes'
+
 class Fotos(models.Model):
     album = models.IntegerField()
     url = models.ImageField(upload_to=settings.APP_NAME+'/static/img/album/%Y')
     autorizado = models.BooleanField(default=False)
     creado_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        verbose_name = 'Foto'
+        verbose_name_plural = 'Fotos'
 
 def Redimensionar(uri):
     uri = os.path.join(settings.BASE_DIR, uri)

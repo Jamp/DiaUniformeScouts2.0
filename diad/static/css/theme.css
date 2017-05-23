@@ -141,11 +141,17 @@ h3,h4,h5 {
     float: left;
   }
 }
+
 .navbar-default .navbar-nav > .active > a, .navbar-default .navbar-nav > li:hover > a {
   border: 0 solid #622599;
   border-bottom-width: 2px;
   font-weight: 800;
   background-color: rgba(0, 0, 0, 0);
+}
+
+.navbar-default .navbar-nav > li > a {
+  border: 0 solid transparent;
+  border-bottom-width: 2px;
 }
 
 .panel-thumbnail img {
@@ -163,13 +169,17 @@ h3,h4,h5 {
 
 #footer {
   background-color: #FFF;
-  padding-top: 10px;
+  padding-top: 20px;
   padding-bottom: 10px;
 }
 
 #footer img {
   width: 1.800em;
   opacity: .5;
+}
+
+#footer p {
+  margin-top: .5rem;
 }
 
 /* Adicionales */

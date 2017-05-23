@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from django.http import HttpResponse, HttpResponseRedirect, HttpResponseNotFound
 from django.template.context import RequestContext
-from django.shortcuts import render_to_response
+from django.shortcuts import render_to_response, render
 from django.core.urlresolvers import reverse
 from django.contrib import messages
 from models import Album, Fotos
@@ -25,7 +25,7 @@ def home(request, id_album=None):
     else:
         id_album = int(id_album)
 
-    albums = Album.objects.all().order_by('-album')
+    albums = Album.objects.all().order_by('album')
     photos = Fotos.objects.all().filter(album=id_album, autorizado=True).order_by('-creado_at')[0:5]
 
     message = messages.get_messages(request)
@@ -36,21 +36,21 @@ def home(request, id_album=None):
         next = True
 
     ## FIXME: Permitir que el inicie el día del uniforme y este abierto una semana
-    active = True
+    active = False
 
     ## TODO: Convertir en una opción para ser manejada por el panel y no HardCoding
-    if datetime.now().strftime('%d/%m/%Y') == '27/05/2015':
+    if datetime.now().strftime('%d/%m/%Y') == '27/05/2017':
         active = True
 
     template = 'index.html'
-    return render_to_response(template,context_instance=RequestContext(request,locals()))
+    return render(request, template, locals())
 
 def album(request, id_album):
 
     current = datetime.now().year
     id_album = int(id_album)
 
-    albums = Album.objects.all().order_by('-album')
+    albums = Album.objects.all().order_by('album')
     photos = Fotos.objects.all().filter(album=id_album, autorizado=True).order_by('-creado_at')[0:5]
 
     all = len(Fotos.objects.all().filter(album=id_album, autorizado=True))
@@ -59,7 +59,7 @@ def album(request, id_album):
         next = True
 
     template = 'album.html'
-    return render_to_response(template,context_instance=RequestContext(request,locals()))
+    return render(request, template, locals())
 
 def subir(request):
 
@@ -103,7 +103,7 @@ def paginar(request, pagina='2', id_album=None):
 
     if len(photos) == 0:
         return HttpResponseNotFound('<h1>Page not found</h1>')
-    return HttpResponse(simplejson.dumps(output), content_type="application/json")
+    return JsonResponse(output)
 
 
 ## Get Token FB/Twitter
@@ -133,7 +133,7 @@ def twitter_token(request):
         request.session['twitter_auth'] = auth
 
     template = 'twitter_token.html'
-    return render_to_response(template, locals())
+    return render(request, template, locals())
 
 def facebook_token(request):
     ## Tomamos el absolute path de donde esta corriendo
@@ -158,4 +158,4 @@ def facebook_token(request):
         url = facebook.auth_url(settings.FB_API, callback, ['user_about_me','user_photos','publish_actions'])
 
     template = 'facebook_token.html'
-    return render_to_response(template, locals())
+    return render(request, template, locals())

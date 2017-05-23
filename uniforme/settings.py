@@ -97,6 +97,7 @@ WSGI_APPLICATION = 'uniforme.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
+        'HOST': 'localhost',
         'NAME': 'scouts_diauniforme',
         'USER': 'root'
     }

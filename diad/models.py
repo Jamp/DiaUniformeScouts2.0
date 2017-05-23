@@ -14,7 +14,7 @@ Celebrando el orgullo de ser Scout #DiadelUniformeScout'
 # Create your models here.
 class Album(models.Model):
     album = models.IntegerField()
-    url = models.ImageField(upload_to=settings.APP_NAME+'/static/img/portada')
+    url = models.ImageField(upload_to=settings.APP_NAME+'/static/img/portada', max_length=250)
     creado_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
@@ -23,7 +23,7 @@ class Album(models.Model):
 
 class Fotos(models.Model):
     album = models.IntegerField()
-    url = models.ImageField(upload_to=settings.APP_NAME+'/static/img/album/%Y')
+    url = models.ImageField(upload_to=settings.APP_NAME+'/static/img/album/%Y', max_length=250)
     autorizado = models.BooleanField(default=False)
     creado_at = models.DateTimeField(auto_now_add=True)
 

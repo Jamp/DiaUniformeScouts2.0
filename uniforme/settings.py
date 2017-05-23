@@ -18,16 +18,16 @@ import logging
 APP_NAME = 'diad'
 
 ## Twitter ##
-TW_KEY = "XXX"
-TW_SECRET = "XXX"
-TW_TOKEN = "XXX"
-TW_TOKEN_SECRET = "XXX"
+TW_KEY = os.environ.get('TWITTER_KEY')
+TW_SECRET = os.environ.get('TWITTER_SECRET')
+TW_TOKEN = os.environ.get('TWITTER_TOKEN')
+TW_TOKEN_SECRET = os.environ.get('TWITTER_TOKEN_SECRET')
 
 ## Facebook ##
-FB_API = "XXX"
-FB_SECRET = "XXX"
-FB_TOKEN = "XXX"
-FB_TOKEN_SECRET = "XXX"
+FB_API = os.environ.get('FACEBOOK_API')
+FB_SECRET = os.environ.get('FACEBOOK_SECRET')
+FB_TOKEN = os.environ.get('FACEBOOK_TOKEN')
+FB_TOKEN_SECRET = os.environ.get('FACEBOOK_TOKEN_SECRET')
 
 
 ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -43,8 +43,10 @@ SECRET_KEY = '8m#q=b4cy(5%-wkplwgq*hr1gdamx9fi&r^u-o_bk)hs5d)k3u'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
-
+ALLOWED_HOSTS = [
+    'uniforme.scout.org.ve',
+    'localhost'
+]
 
 # Application definition
 

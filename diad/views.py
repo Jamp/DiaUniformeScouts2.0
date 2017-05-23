@@ -9,7 +9,6 @@ from forms import UploadForm
 from datetime import datetime
 from django.conf import settings
 from twython import Twython
-import simplejson
 import facebook
 import requests
 

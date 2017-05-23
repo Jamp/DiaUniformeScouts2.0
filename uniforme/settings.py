@@ -46,6 +46,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = [
     'uniforme.scout.org.ve',
+    'diauniforme.herokuapp.com',
     'localhost'
 ]
 
@@ -107,8 +108,8 @@ DATABASES = {
     }
 }
 
-# db_from_env = dj_database_url.config()
-# DATABASES['default'].update(db_from_env)
+db_from_env = dj_database_url.config()
+DATABASES['default'].update(db_from_env)
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.8/topics/i18n/

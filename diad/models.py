@@ -8,6 +8,10 @@ from datetime import datetime
 from twython import Twython
 from facebook import GraphAPI
 
+import cloudinary
+import cloudinary.uploader
+import cloudinary.api
+
 descripcion = 'Nueva imagen subida a http://uniforme.scout.org.ve, \
 Celebrando el orgullo de ser Scout #DiadelUniformeScout'
 
@@ -39,11 +43,19 @@ def Redimensionar(uri):
         im = Image.open(uri)
         im.thumbnail(size, Image.ANTIALIAS)
         im.save(uri, "JPEG")
+
+        # Moviendo a cloudinary
+        cloudinary.config(
+          cloud_name = settings.CL_NAME,
+          api_key = settings.CL_API,
+          api_secret = settings.CL_SECRET
+        )
+        return cloudinary.uploader.upload(uri, folder="diadeluniforme/2017")
     except IOError:
         pass
 
 def PrepararURL(instancia):
-    if str(instancia.url).find(settings.APP_NAME) == -1:
+    if str(instancia.url).find(settings.APP_NAME) == -1 or str(instancia.url).find(cloudinary.com):
         pass
     else:
         instancia.url = str(instancia.url).replace(settings.APP_NAME, '')
@@ -57,11 +69,13 @@ def PostAlbum(sender, instance, **kwargs):
 def PostFotos(sender, instance, **kwargs):
     url = str(instance.url)
 
-    Redimensionar(url)
-    PrepararURL(instance)
+    cloud = Redimensionar(url)
+    instance.url = cloud.url
+    instance.save()
+    # PrepararURL(instance)
 
     if instance.autorizado and instance.album == datetime.now().year:
-        uri = os.path.join(settings.BASE_DIR,settings.APP_NAME)+url
+        uri = str(cloud.url)
         PublicarTwitter(uri)
         PublicarFacebook(uri)
 

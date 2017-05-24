@@ -8,6 +8,8 @@ from django.db.models.signals import post_save
 from datetime import datetime
 from twython import Twython
 from facebook import GraphAPI
+from PIL import Image
+import urllib, cStringIO
 
 import cloudinary
 import cloudinary.uploader
@@ -97,7 +99,10 @@ def PublicarTwitter(uri):
     try:
         twitter = Twython(settings.TW_KEY, settings.TW_SECRET, settings.TW_TOKEN, settings.TW_TOKEN_SECRET)
 
-        image_id = twitter.upload_media(media=open(uri, 'rb'))
+        file_from_url = cStringIO.StringIO(urllib.urlopen(uri).read())
+        img = Image.open(file_from_url)
+
+        image_id = twitter.upload_media(media=img)
         twitter.update_status(status=descripcion, media_ids=image_id['media_id'])
     except Exception, e:
         logging.error(e)
@@ -106,7 +111,10 @@ def PublicarFacebook(uri):
     try:
         api = GraphAPI(settings.FB_TOKEN)
 
-        api.put_photo(open(uri,"rb"), message=descripcion)
+        file_from_url = cStringIO.StringIO(urllib.urlopen(uri).read())
+        img = Image.open(file_from_url)
+
+        api.put_photo(img, message=descripcion)
     except Exception, e:
         logging.error(e)
 

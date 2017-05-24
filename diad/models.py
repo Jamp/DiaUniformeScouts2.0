@@ -99,10 +99,9 @@ def PublicarTwitter(uri):
     try:
         twitter = Twython(settings.TW_KEY, settings.TW_SECRET, settings.TW_TOKEN, settings.TW_TOKEN_SECRET)
 
-        file_from_url = cStringIO.StringIO(urllib.urlopen(uri).read())
-        img = Image.open(file_from_url)
+        image_from_url = cStringIO.StringIO(urllib.urlopen(uri).read())
 
-        image_id = twitter.upload_media(media=img)
+        image_id = twitter.upload_media(media=image_from_url)
         twitter.update_status(status=descripcion, media_ids=image_id['media_id'])
     except Exception, e:
         logging.error(e)
@@ -111,10 +110,9 @@ def PublicarFacebook(uri):
     try:
         api = GraphAPI(settings.FB_TOKEN)
 
-        file_from_url = cStringIO.StringIO(urllib.urlopen(uri).read())
-        img = Image.open(file_from_url)
+        image_from_url = cStringIO.StringIO(urllib.urlopen(uri).read())
 
-        api.put_photo(img, message=descripcion)
+        api.put_photo(image_from_url, message=descripcion)
     except Exception, e:
         logging.error(e)
 

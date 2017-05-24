@@ -8,7 +8,7 @@ from datetime import datetime
 from twython import Twython
 from facebook import GraphAPI
 
-descripcion = 'Nueva imagen subida a http://uniforme.scoutsfalcon.org, \
+descripcion = 'Nueva imagen subida a http://uniforme.scout.org.ve, \
 Celebrando el orgullo de ser Scout #DiadelUniformeScout'
 
 # Create your models here.
@@ -79,7 +79,7 @@ def PublicarFacebook(uri):
     try:
         api = GraphAPI(settings.FB_TOKEN)
 
-        api.put_photo(open(uri,"rb"), descripcion)
+        api.put_photo(open(uri,"rb"), message=descripcion)
     except Exception, e:
         logging.error(e)
 

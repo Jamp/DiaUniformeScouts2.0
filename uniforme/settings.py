@@ -28,7 +28,6 @@ TW_TOKEN_SECRET = os.environ.get('TWITTER_TOKEN_SECRET')
 FB_API = os.environ.get('FACEBOOK_API')
 FB_SECRET = os.environ.get('FACEBOOK_SECRET')
 FB_TOKEN = os.environ.get('FACEBOOK_TOKEN')
-FB_TOKEN_SECRET = os.environ.get('FACEBOOK_TOKEN_SECRET')
 
 
 ROOT_DIR = os.path.dirname(os.path.abspath(__file__))

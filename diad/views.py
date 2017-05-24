@@ -144,16 +144,19 @@ def facebook_token(request):
         code = request.GET['code']
 
         ## Con el Code que recibimos de FB solicitamos un Access Token temporal
-        params = facebook.get_access_token_from_code(code, callback, settings.FB_API, settings.FB_SECRET)
+        params = facebook.GraphAPI().get_access_token_from_code(code, callback, settings.FB_API, settings.FB_SECRET)
 
         ## Solicitamos el un Access Token "Permanente" 2 Meses aproximadamente
-        arg = {'grant_type': 'fb_exchange_token', 'client_id': settings.FB_API, 'client_secret': settings.FB_SECRET, 'fb_exchange_token': params['access_token']}
-        req = requests.request("GET","https://graph.facebook.com/oauth/access_token", params=arg).text
+        arg = {
+            'grant_type': 'fb_exchange_token',
+            'client_id': settings.FB_API,
+            'client_secret': settings.FB_SECRET,
+            'fb_exchange_token': params['access_token']
+        }
+        req = requests.request("GET","https://graph.facebook.com/oauth/access_token", params=arg).json()
 
-        ## Carpinteria
-        s = req.split('&')
-        t, token = s[0].split('=')
-        e, expires = s[1].split('=')
+        token = req['access_token']
+        expires = req['expires_in']
     else:
         ## Se arma la URL para autenticar
         url = facebook.auth_url(settings.FB_API, callback, ['user_about_me','user_photos','publish_actions'])

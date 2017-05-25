@@ -51,6 +51,7 @@ def Redimensionar(uri):
         im.thumbnail(size, Image.ANTIALIAS)
         im.save(uri, "JPEG")
 
+        # FIXME: Pasar esto a clase a parte y parametrizar el folder en cloudinary
         # Moviendo a cloudinary
         cloudinary.config(
           cloud_name = settings.CL_NAME,
@@ -68,6 +69,7 @@ def PrepararURL(instancia):
         instancia.url = str(instancia.url).replace(settings.APP_NAME, '')
         instancia.save()
 
+# TODO: subir estás imágenes a cloudinary igual que lo hago con las fotos
 def PostAlbum(sender, instance, **kwargs):
     post_save.disconnect(PostAlbum, sender=Album, dispatch_uid="prepare_album_url")
 
@@ -78,6 +80,7 @@ def PostAlbum(sender, instance, **kwargs):
     post_save.connect(PostAlbum, sender=Album, dispatch_uid="prepare_album_url")
 
 def PostFotos(sender, instance, **kwargs):
+    # FIXME: Refactorizar este código, sobre todo el enviar las imagenes a cloudinary
     post_save.disconnect(PostFotos, sender=Fotos, dispatch_uid="prepare_fotos_url")
 
     url = str(instance.url)

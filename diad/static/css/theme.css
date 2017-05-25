@@ -186,3 +186,8 @@ h3,h4,h5 {
 .alert-error{background-color:#f2dede;border-color:#ebccd1;color:#a94442}
 .well {background-color: white;}
 .navbar-toggle {float: left;}
+
+a:hover, a:focus, a:active {
+  color: #2a6496;
+  text-decoration: none;
+}

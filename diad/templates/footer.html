@@ -44,20 +44,22 @@
                 var loading = '<i class="fa fa-spinner fa-spin"></i> Cargando...';
 
                 $('#siguiente').html(loading);
-                $('#gallery').append('<div class="row">');
                 $.getJSON(
                     url,
                     null,
                     function(response){
                         var data = response.photos,
-                        row1 = data.slice(0, 3),
-                        row2 = data.slice(3, 6);
+                        grid = '<div class="row">',
+                        tmpl = $.template("#items"),
+                        strings;
 
-                        $('#items').tmpl(row1).appendTo('#gallery');
-                        $('#gallery').append('</div><div class="row">');
+                        $.each(data, function (index, value) {
+                          strings = tmpl($, {data: value});
+                          grid += strings.join('');
+                        });
 
-                        $('#items').tmpl(row2).appendTo('#gallery');
-                        $('#gallery').append('</div>');
+                        grid += '</div>';
+                        $('#gallery').append(grid);
 
                         total--;
                         if (total == 0){

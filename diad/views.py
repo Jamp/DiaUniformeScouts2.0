@@ -35,7 +35,7 @@ def home(request, id_album=None):
         next = True
 
     ## FIXME: Permitir que el inicie el día del uniforme y este abierto una semana
-    active = True
+    active = False
 
     ## TODO: Convertir en una opción para ser manejada por el panel y no HardCoding
     if datetime.now().strftime('%d/%m/%Y') == '23/05/2018':
